@@ -3,179 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prank Audio Explosivo!</title>
+    <title>Atualização do Sistema</title>
     <style>
-        :root {
-            --primary-color: #ff4444;
-            --background: #1a1a1a;
-            --text-color: #ffffff;
-            --card-bg: #2d2d2d;
-        }
-
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: var(--background);
-            color: var(--text-color);
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
             min-height: 100vh;
-            margin: 0;
-            padding: 20px;
         }
 
-        .warning {
-            color: var(--primary-color);
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-            max-width: 90%;
+        .alert {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            max-width: 400px;
+            margin: 20px;
+            position: relative;
         }
 
         button {
-            padding: 20px 40px;
-            font-size: 1.5rem;
-            background-color: var(--primary-color);
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 15px;
+            border-radius: 5px;
             cursor: pointer;
-            transition: transform 0.1s, filter 0.2s;
             margin: 20px 0;
-            position: relative;
-            box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
+            transition: background-color 0.3s;
         }
 
         button:hover {
-            transform: scale(1.05);
-            filter: brightness(1.1);
+            background-color: #45a049;
         }
 
-        .media-container {
+        .device-info {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .images {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
+            justify-content: space-around;
             width: 100%;
-            max-width: 800px;
             margin: 20px 0;
         }
 
-        .media {
-            width: 200px;
-            height: 200px;
+        .images img {
+            width: 80px;
+            height: 80px;
             object-fit: cover;
-            border-radius: 15px;
-            border: 2px solid #444;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        #countdown {
-            font-size: 1.1rem;
-            color: #ccc;
-            margin-bottom: 15px;
-            font-family: monospace;
-        }
-
-        /* Responsividade para Mobile */
-        @media (max-width: 768px) {
-            .media-container {
-                flex-direction: column;
-            }
-
-            button {
-                width: 90%;
-                padding: 25px;
-                font-size: 1.3rem;
-                margin: 15px 0;
-            }
-
-            .media {
-                width: 300px;
-                height: 100px;
-            }
-
-            .warning {
-                font-size: 1rem;
-            }
-
-            #countdown {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            button {
-                font-size: 1.1rem;
-                padding: 20px;
-            }
-
-            .media {
-                width: 80px;
-                height: 80px;
-            }
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
-    <div class="warning" id="deviceWarning"></div>
-    <div id="countdown"></div>
-    
-    <div class="media-container">
-        <img src="https://i.giphy.com/media/3orieS4jfHJaKwkeli/giphy.webp" alt="GIF divertido" class="media">
-        <button id="actionBtn">CLIQUE AQUI AGORA!!!</button>
-        <img src="https://c.tenor.com/mtiOW6O-k8YAAAAC/tenor.gif" alt="Ícone de alerta" class="media">
+    <div class="alert">
+        <div class="device-info" id="deviceInfo"></div>
+        <div class="images">
+            <img src="https://i.gifer.com/7I5p.gif" alt="Ícone">
+            <button onclick="cancel()">Cancelar Execução</button>
+            <img src="https://picsum.photos/80" alt="Foto">
+        </div>
+        <p>Se você não clicar em dois segundos vai estourar um áudio muito alto</p>
     </div>
 
-    <audio id="explosiveAudio" src="/audio/luan-gameplay-site.mp3"></audio>
+    <audio id="alertSound" src="/audio/luan-gameplay-site.mp3"></audio>
 
     <script>
-        const deviceInfo = navigator.userAgent;
-        let deviceName = 'Dispositivo';
-        
-        // Detectar nome do aparelho
-        if (deviceInfo.match(/Android/i)) {
-            deviceName = 'Android';
-        } else if (deviceInfo.match(/iPhone|iPad|iPod/i)) {
-            deviceName = 'iPhone';
-        }
+        const deviceInfo = document.getElementById('deviceInfo');
+        const audio = document.getElementById('alertSound');
+        let countdown = 2;
+        let timeout;
 
-        let seconds = 1;
-        let countdownActive = true;
-        const audio = document.getElementById('explosiveAudio');
-        const btn = document.getElementById('actionBtn');
-        
-        document.getElementById('deviceWarning').textContent = 
-            `O seu ${deviceName} vai executar um áudio muito peculiar...`;
-        
-        function updateCountdown() {
-            document.getElementById('countdown').textContent = 
-                `Tempo restante: ${seconds} segundo${seconds !== 1 ? 's' : ''}`;
+        // Detectar dispositivo
+        const userDevice = navigator.userAgent.split('(')[1].split(')')[0];
+        deviceInfo.textContent = `Seu ${userDevice} vai executar um áudio muito peculiar em...`;
+
+        function updateTimer() {
+            deviceInfo.textContent = `Seu ${userDevice} vai executar um áudio muito peculiar em ${countdown} segundos`;
+            countdown--;
             
-            if (seconds <= 0 && countdownActive) {
+            if(countdown < 0) {
                 audio.play();
-                countdownActive = false;
-                document.getElementById('countdown').textContent = "BOOM!";
-                document.body.style.backgroundColor = '#4a0000';
+                deviceInfo.textContent = "Execução em andamento!";
+                clearTimeout(timeout);
             }
-            seconds=-1;
         }
 
-        // Iniciar contagem regressiva
-        const countdownInterval = setInterval(updateCountdown, 1000);
+        timeout = setInterval(updateTimer, 1000);
 
-        // Botão de emergência
-        btn.addEventListener('click', () => {
-            clearInterval(countdownInterval);
-            countdownActive = false;
-            document.getElementById('countdown').textContent = "Ufa! Você escapou! 😅";
-            btn.textContent = "DESATIVADO!";
-            btn.style.backgroundColor = "#4CAF50";
-            btn.style.boxShadow = '0 4px 15px rgba(76, 175, 80, 0.3)';
-        });
+        function cancel() {
+            clearInterval(timeout);
+            deviceInfo.textContent = "Execução cancelada com sucesso!";
+            alert("Processo interrompido! Dispositivo seguro.");
+        }
     </script>
 </body>
 </html>
