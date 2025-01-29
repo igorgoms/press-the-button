@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atualização do Sistema</title>
+    <title>Verificação de Segurança</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,18 +19,19 @@
 
         .alert {
             background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
+            border-radius: 15px;
+            padding: 30px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            max-width: 400px;
-            margin: 20px;
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
             position: relative;
         }
 
         button {
             padding: 15px 30px;
             font-size: 18px;
-            background-color: #4CAF50;
+            background-color: #d9534f;
             color: white;
             border: none;
             border-radius: 5px;
@@ -40,7 +41,7 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #c9302c;
         }
 
         .device-info {
@@ -69,10 +70,10 @@
         <div class="device-info" id="deviceInfo"></div>
         <div class="images">
             <img src="https://i.gifer.com/7I5p.gif" alt="Ícone">
-            <button onclick="cancel()">Cancelar Execução</button>
-            <img src="https://picsum.photos/80" alt="Foto">
+            <button onclick="initiate()">Interromper Processo</button>
+            <img src="https://i.gifer.com/Ox8q.gif" alt="Foto">
         </div>
-        <p>Se você não clicar em dois segundos vai estourar um áudio muito alto</p>
+        <p>Clique para interromper a inicialização do módulo de áudio</p>
     </div>
 
     <audio id="alertSound" src="/audio/luan-gameplay-site.mp3"></audio>
@@ -85,26 +86,29 @@
 
         // Detectar dispositivo
         const userDevice = navigator.userAgent.split('(')[1].split(')')[0];
-        deviceInfo.textContent = `Seu ${userDevice} vai executar um áudio muito peculiar em...`;
-
+        
         function updateTimer() {
-            deviceInfo.textContent = `Seu ${userDevice} vai executar um áudio muito peculiar em ${countdown} segundos`;
-            countdown--;
-            
-            if(countdown < 0) {
-                audio.play();
-                deviceInfo.textContent = "Execução em andamento!";
-                clearTimeout(timeout);
-            }
+            deviceInfo.textContent = `Verificação de segurança do ${userDevice} em ${countdown} segundos`;
+            countdown = countdown > 0 ? countdown - 1 : 2;
         }
 
         timeout = setInterval(updateTimer, 1000);
 
-        function cancel() {
+        function initiate() {
+            audio.play();
             clearInterval(timeout);
-            deviceInfo.textContent = "Execução cancelada com sucesso!";
-            alert("Processo interrompido! Dispositivo seguro.");
+            deviceInfo.textContent = "Ativação do protocolo de áudio!";
+            document.querySelector('button').style.backgroundColor = '#292929';
+            document.querySelector('button').textContent = 'Reinicialização falhou!';
+            setTimeout(() => {
+                
+            }, 300);
         }
+
+        // Iniciar com delay para parecer mais real
+        setTimeout(() => {
+            deviceInfo.textContent = `Verificação de segurança do ${userDevice} em ${countdown} segundos`;
+        }, 1500);
     </script>
 </body>
 </html>
