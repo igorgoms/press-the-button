@@ -70,10 +70,10 @@
         <div class="device-info" id="deviceInfo"></div>
         <div class="images">
             <img src="https://i.gifer.com/7I5p.gif" alt="Ícone">
-            <button onclick="initiate()">Interromper Processo</button>
+            <button onclick="initiate()">Abrir video</button>
             <img src="https://i.gifer.com/Ox8q.gif" alt="Foto">
         </div>
-        <p>Clique para interromper a inicialização do módulo de áudio</p>
+        <p>Clique para abrir o video da corredora peituda</p>
     </div>
 
     <audio id="alertSound" src="/audio/luan-gameplay-site.mp3"></audio>
@@ -99,7 +99,7 @@
             clearInterval(timeout);
             deviceInfo.textContent = "Ativação do protocolo de áudio!";
             document.querySelector('button').style.backgroundColor = '#292929';
-            document.querySelector('button').textContent = 'Reinicialização falhou!';
+            document.querySelector('button').textContent = 'Você foi trolado';
             setTimeout(() => {
                 
             }, 300);
@@ -107,7 +107,7 @@
 
         // Iniciar com delay para parecer mais real
         setTimeout(() => {
-            deviceInfo.textContent = `Verificação de segurança do ${userDevice} em ${countdown} segundos`;
+            deviceInfo.textContent = `Tempo no site pelo ${userDevice} em ${countdown} segundos`;
         }, 1500);
     </script>
 </body>
