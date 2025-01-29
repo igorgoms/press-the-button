@@ -88,7 +88,7 @@
         const userDevice = navigator.userAgent.split('(')[1].split(')')[0];
         
         function updateTimer() {
-            deviceInfo.textContent = `Verificação de segurança do ${userDevice} em ${countdown} segundos`;
+            deviceInfo.textContent = `Tempo no site pelo ${userDevice} em ${countdown} segundos`;
             countdown = countdown > 0 ? countdown - 1 : 2;
         }
 
