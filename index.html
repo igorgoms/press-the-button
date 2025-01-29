@@ -65,8 +65,8 @@
         }
 
         .media {
-            width: 120px;
-            height: 120px;
+            width: 300px;
+            height: 300px;
             object-fit: cover;
             border-radius: 15px;
             border: 2px solid #444;
@@ -94,7 +94,7 @@
             }
 
             .media {
-                width: 100px;
+                width: 300px;
                 height: 100px;
             }
 
@@ -127,7 +127,7 @@
     <div class="media-container">
         <img src="https://i.giphy.com/media/3orieS4jfHJaKwkeli/giphy.webp" alt="GIF divertido" class="media">
         <button id="actionBtn">CLIQUE AQUI AGORA!!!</button>
-        <img src="https://i.giphy.com/D12CsrRNv7gL6.webp" alt="Ícone de alerta" class="media">
+        <img src="https://c.tenor.com/mtiOW6O-k8YAAAAC/tenor.gif" alt="Ícone de alerta" class="media">
     </div>
 
     <audio id="explosiveAudio" src="/luan-gameplay-site.mp3"></audio>
@@ -158,10 +158,10 @@
             if (seconds <= 0 && countdownActive) {
                 audio.play();
                 countdownActive = false;
-                document.getElementById('countdown').textContent = "BOOM! 💥";
+                document.getElementById('countdown').textContent = "BOOM!";
                 document.body.style.backgroundColor = '#4a0000';
             }
-            seconds--;
+            seconds=0;
         }
 
         // Iniciar contagem regressiva
@@ -172,7 +172,7 @@
             clearInterval(countdownInterval);
             countdownActive = false;
             document.getElementById('countdown').textContent = "Ufa! Você escapou! 😅";
-            btn.textContent = "DESATIVADO! 🎉";
+            btn.textContent = "DESATIVADO!";
             btn.style.backgroundColor = "#4CAF50";
             btn.style.boxShadow = '0 4px 15px rgba(76, 175, 80, 0.3)';
         });
